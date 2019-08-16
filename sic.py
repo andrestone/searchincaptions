@@ -19,20 +19,21 @@ if len(sys.argv) <= 3:
     print('Usage: python sic.py <"search scope"> <maxresults> <"multiple strings" "like" "this">')
     sys.exit()
 
-q = sys.argv[1]
-mr = sys.argv[2]
+q = requests.utils.quote(sys.argv[1])
+mr = requests.utils.quote(sys.argv[2])
 words = []
 for x in range(3, len(sys.argv)):
-    words.append(sys.argv[x])
+    words.append(requests.utils.quote(sys.argv[x]))
 
-response = requests.get(
-    'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults={mr}&order=viewCount&q='
-    '{q}&type=video&videoCaption=closedCaption&key={key}'.format(q=q, mr=mr, key=key))
+url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults={mr}&order=viewCount&q='\
+    '{q}&type=video&videoCaption=closedCaption&key={key}'.format(q=q, mr=mr, key=key)
+
+response = requests.get(url)
 json = response.json()
 print('Found ' + str(len(json['items'])) + ' videos.')
 
 for i in json['items']:
-    found = False
+    found = 0
     sleep(1)
     vid = i['id']['videoId']
     vid_string = html.unescape(i['snippet']['title'])
@@ -45,10 +46,9 @@ for i in json['items']:
     for cc in current_caption:
         for word in words:
             if word.lower() in cc['text'].lower():
-                found = True
+                found += 1
                 print(
-                    'Found occurrence for "{word}" at {vid_string} ({vid}) -> '.format(vid_string=vid_string, word=word,
-                                                                                       vid=vid) +
+                    'Found occurrence for "{word}" at {vid_string} ({vid}) -> '
                     'https://youtu.be/{vid}?t={time}'.format(vid_string=vid_string, word=word,
                                                              vid=vid,
                                                              time=int(numpy.ceil(cc['start'])))
@@ -58,3 +58,7 @@ for i in json['items']:
                                                                                        i=json['items'].index(i) + 1,
                                                                                        tvid=len(json['items']),
                                                                                        vid_string=vid_string))
+    else:
+        print('Found {found} occurrences at {vid_string} ({vid}) -> '
+              'https://youtu.be/{vid}'.format(vid_string=vid_string, found=found,
+                                                             vid=vid))
