@@ -14,19 +14,28 @@ if len(TOKEN_PATH) == 0:
 
 key = TOKEN_PATH[0].replace("TOKEN_", "")
 
-if len(sys.argv) <= 3:
+x = 1
+viewcount = ""
+while '--' in sys.argv[x]:
+    viewcount = '&order=viewCount' if 'viewcount' in sys.argv[x] else ''
+    x += 1
+
+if len(sys.argv) <= (x + 2):
     print("Search youtube videos based on content (captions)")
-    print('Usage: python sic.py <"search scope"> <maxresults> <"multiple strings" "like" "this">')
+    print('Usage: python sic.py [--viewcount] <"search scope"> <maxresults> <"multiple strings" "like" "this">')
+    print('--viewcount sort results by view count.')
     sys.exit()
 
-q = requests.utils.quote(sys.argv[1])
-mr = requests.utils.quote(sys.argv[2])
+q = requests.utils.quote(sys.argv[x])
+mr = sys.argv[x+1]
 words = []
-for x in range(3, len(sys.argv)):
-    words.append(requests.utils.quote(sys.argv[x]))
+for z in range(x+2, len(sys.argv)):
+    words.append(sys.argv[z])
 
-url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults={mr}&order=viewCount&q='\
-    '{q}&type=video&videoCaption=closedCaption&key={key}'.format(q=q, mr=mr, key=key)
+url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults={mr}{viewcount}&q='\
+    '{q}&type=video&videoCaption=closedCaption&key={key}'.format(q=q, mr=mr, key=key, viewcount = viewcount)
+
+print(url)
 
 response = requests.get(url)
 json = response.json()
