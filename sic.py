@@ -1,3 +1,4 @@
+#!/usr/local/bin/python3
 import os
 import sys
 from time import sleep
@@ -16,9 +17,10 @@ key = TOKEN_PATH[0].replace("TOKEN_", "")
 
 x = 1
 viewcount = ""
-while '--' in sys.argv[x]:
-    viewcount = '&order=viewCount' if 'viewcount' in sys.argv[x] else ''
-    x += 1
+if len(sys.argv) > 1:
+    while '--' in sys.argv[x]:
+        viewcount = '&order=viewCount' if 'viewcount' in sys.argv[x] else ''
+        x += 1
 
 if len(sys.argv) <= (x + 2):
     print("Search youtube videos based on content (captions)")

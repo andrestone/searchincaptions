@@ -4,7 +4,7 @@
 
 1. You have to create a directory with the name TOKEN_{your Google API token}. Like this: `mkdir ./TOKEN_IJHEO2J3KjkOEWIJKEKklj323`
 
-2. Usage: `python sic.py [--viewcount] <"search scope"> <maxresults> <"multiple strings" "like" "this">')`
+2. Usage: `python sic.py [--viewcount] <"search scope"> <maxresults> <"multiple strings" "like" "this">`
     >using `--viewcount` it sorts video results by view count.
 
 3. Example:
