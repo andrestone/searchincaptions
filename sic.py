@@ -41,8 +41,8 @@ if len(sys.argv) > 1:
 if len(sys.argv) < 3:
     print("Search youtube videos based on content (captions)")
     print(
-        'Usage: python sic.py [--maxresults <maxresults>] [--viewcount] [--channel <channelId>] \
-        <"search scope"> <"multiple strings" "like" "this">')
+        'Usage: python sic.py [--maxresults <maxresults>] [--viewcount] [--channel <channelId>]'
+        ' <"search scope"> <"multiple strings" "like" "this">')
     print('--viewcount sorts results by view count.')
     print('--maxresults sets total results to search into (default: 50)')
     print('--channel sets a channel id to search from (e.g.: UCcefcZRL2oaA_uBNeo5UOWg)')
