@@ -96,7 +96,7 @@ if channelId:
     for j in pages:
         # this filters out items not containing any of the search words in their titles
         if q:
-            j["items"] = [x for x in j["items"] if len([y for y in sys.argv[1].split(" ") if y in x["snippet"]["title"]]) > 0]
+            j["items"] = [x for x in j["items"] if len([y for y in sys.argv[1].lower().split(" ") if y in x["snippet"]["title"].lower()]) > 0]
 
 for json in pages:
     print('Found ' + str(len(json['items'])) + ' videos.')
